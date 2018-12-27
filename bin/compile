@@ -74,9 +74,10 @@ for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
   dpkg -x $DEB $BUILD_DIR/.apt/
 done
 
-
-topic "Setting up VNC daemon"
+topic "Setting up Xvfb and VNC daemon"
 cat <<EOF >$BUILD_DIR/.profile.d/020_vnc.sh
-x11vnc -bg -nopw -listen localhost -xkb
+export DISPLAY=:1
+Xvfb :1 -screen 0 1024x768x16 &
+x11vnc -display :1 -bg -nopw -xkb -listen localhost
 EOF
 
